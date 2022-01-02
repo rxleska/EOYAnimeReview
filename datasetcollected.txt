@@ -1,0 +1,17 @@
+show id
+show title
+season time
+season year
+episodes
+duration of episodes
+generes
+tags
+    id 
+    name
+    rank
+mean score
+popularity
+sudios
+    id
+    name
+cover image
