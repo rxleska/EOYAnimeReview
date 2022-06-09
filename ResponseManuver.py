@@ -67,5 +67,24 @@ def CreateAnimeFromEntry(ent):
     studios = GenerateStudioList(
         GetContentsFromPath('media~studios~edges', ent))
     siteUrl = GetContentsFromPath('media~siteUrl', ent)
+    defc = DefiningCharacteristics(
+        GetContentsFromPath('media~seasonYear', ent),
+        GetContentsFromPath('media~season', ent),
+        GetContentsFromPath('media~seasonInt', ent),
+        GetContentsFromPath('media~type', ent),
+        GetContentsFromPath('media~format', ent),
+        GetContentsFromPath('media~status', ent),
+        ADate(
+            GetContentsFromPath('media~endDate~year', ent),
+            GetContentsFromPath('media~endDate~month', ent),
+            GetContentsFromPath('media~endDate~day', ent)
+        ),
+        GetContentsFromPath('media~countryOfOrigin', ent),
+        GetContentsFromPath('media~episodes', ent),
+        GetContentsFromPath('media~duration', ent),
+        GetContentsFromPath('media~source', ent),
+        GetContentsFromPath('media~isAdult', ent),
+        GetContentsFromPath('media~isLicensed', ent),
+    )
 
-    return Anime(ids, rating, progression, imgs, name, recommendations, staff, tags, description, externalMedia, generes, relatedMedia, characters, studios, siteUrl)
+    return Anime(ids, rating, progression, imgs, name, recommendations, staff, tags, description, externalMedia, generes, relatedMedia, characters, studios, siteUrl, defc)

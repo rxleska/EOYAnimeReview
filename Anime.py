@@ -11,7 +11,7 @@ def Arr2Str(a):
 class Anime:
     """The Anime Class contains all the information of an anime"""
 
-    def __init__(self, i, r, p, aimg, n, rec, stf, tgs, des, ems, gen, rel, chars, sdos, surl):
+    def __init__(self, i, r, p, aimg, n, rec, stf, tgs, des, ems, gen, rel, chars, sdos, surl, defc):
         """
         The Anime Class contains all the information of an anime\n
         :param i: Media Ids object containing the main entrys ids: TYPE MediaIds :
@@ -29,6 +29,7 @@ class Anime:
         :param chars: Characters: TYPE Array of TYPE Character
         :param sdos: Studios: TYPE Array of TYPE Studio
         :param surl: Site Url of Anime Entry (media siteUrl)
+        :param defc: Defining Characteristics
         """
         self.ids = i
         self.rating = r
@@ -40,14 +41,24 @@ class Anime:
         self.tags = tgs
         self.description = des
         self.externalMedia = ems
-        self.generes = gen
+        self.genres = gen
         self.relatedMedia = rel
         self.characters = chars
         self.studios = sdos
         self.siteUrl = surl
+        self.definingChars = defc
 
     def __str__(self):
-        return "IDS: " + self.ids.__str__() + "\n\nRatings:" + self.rating.__str__() + "\n\nProgress:" + self.progression.__str__() + "\n\nImg:" + self.imgs.__str__() + "\n\nName:" + self.name.__str__() + "\n\nRecom:" + Arr2Str(self.recommendations) + "\n\nStaff:" + Arr2Str(self.staff) + "\n\nTags:" + self.tags.__str__() + "\n\nDesc:" + self.description.__str__() + "\n\nExternalMedia:" + self.externalMedia.__str__() + "\n\nGenres" + self.generes.__str__() + "\n\nrelated:" + self.relatedMedia.__str__() + "\n\nChars:" + Arr2Str(self.characters) + "\n\nStudios:" + Arr2Str(self.studios) + "\n\nSiteUrl:" + self.siteUrl.__str__()
+        return "IDS: " + self.ids.__str__() + "\n\nRatings:" + self.rating.__str__() + "\n\nProgress:" + self.progression.__str__() + "\n\nImg:" + self.imgs.__str__() + "\n\nName:" + self.name.__str__() + "\n\nRecom:" + Arr2Str(self.recommendations) + "\n\nStaff:" + Arr2Str(self.staff) + "\n\nTags:" + self.tags.__str__() + "\n\nDesc:" + self.description.__str__() + "\n\nExternalMedia:" + self.externalMedia.__str__() + "\n\nGenres" + self.genres.__str__() + "\n\nrelated:" + self.relatedMedia.__str__() + "\n\nChars:" + Arr2Str(self.characters) + "\n\nStudios:" + Arr2Str(self.studios) + "\n\nSiteUrl:" + self.siteUrl.__str__() + "defc:" + self.definingChars.__str__()
+
+    def GetTags(self):
+        """
+        Returns set of all tag names
+        """
+        ret = set()
+        for i in self.tags:
+            ret.add(i.name)
+        return ret
 
 
 class MediaIds:

@@ -41,9 +41,7 @@ randomShowFromCompleted = (lists['COMPLETED'][random.randint(0,
 
 
 print(randomShowFromCompleted.name.english)
+print(randomShowFromCompleted.definingChars.seasonYear)
+print(randomShowFromCompleted.definingChars.seasonPeriod)
 print(randomShowFromCompleted.tags[0].name)
 print(randomShowFromCompleted.tags[1].name)
-
-
-# with open("opt.txt", 'w', encoding="utf-8") as output:
-#     output.write(s)
