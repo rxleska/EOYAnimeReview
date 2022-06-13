@@ -1,8 +1,4 @@
 
-
-from typing import Set
-
-
 def SortDict(dct):
     """
     Sorts A Dictionary from largest number value to smallest
@@ -57,7 +53,8 @@ def GenerateOptions(Ani):
         Ani[opts[2]] + Ani[opts[3]] + Ani[opts[4]]
     for show in combinedList:
         for tag in show.tags:
-            ret['tags'].add(tag.name)
+            if not tag.isAdult:
+                ret['tags'].add(tag.name)
         for genre in show.genres:
             ret['genres'].add(genre)
         ret['year'].add(show.definingChars.seasonYear)
@@ -65,11 +62,31 @@ def GenerateOptions(Ani):
     return ret
 
 
-def AnimeFilter(ani, filters):
+# def AnimeFilter(ani, filters):
+#     """
+#     Filters Anime to only show things that contain the filter
+#     :param ani: Dict of TYPE string : Array of TYPE Anime
+#     :param filters: Dict of filters from listboxes
+#     :returns: Array of TYPE Anime
+#     """
+#     inConsideration = []
+#     for i in filters['status']:
+#         inConsideration = inConsideration + ani[i]
+
+#     res = set()
+#     for show in inConsideration:
+#         if IsSetInSet(filters['tags'], show.GetTags()) and IsSetInSet(filters['genres'], show.genres) and IsAnySetInSet(filters['year'], show.definingChars.seasonYear.__str__()) and IsAnySetInSet(filters['season'], show.definingChars.seasonPeriod.__str__()):
+#             res.add(show)
+
+#     return res
+
+
+def AnimeFilter(ani, filters, toggles):
     """
     Filters Anime to only show things that contain the filter
     :param ani: Dict of TYPE string : Array of TYPE Anime
     :param filters: Dict of filters from listboxes
+    :param toggles: Dict of inclucivity toggles
     :returns: Array of TYPE Anime
     """
     inConsideration = []
@@ -78,7 +95,7 @@ def AnimeFilter(ani, filters):
 
     res = set()
     for show in inConsideration:
-        if IsSetInSet(filters['tags'], show.GetTags()) and IsSetInSet(filters['genres'], show.genres) and IsAnySetInSet(filters['year'], show.definingChars.seasonYear.__str__()) and IsAnySetInSet(filters['season'], show.definingChars.seasonPeriod.__str__()):
+        if GenreAndTagToggle(show, filters, toggles) and IsAnySetInSet(filters['year'], show.definingChars.seasonYear.__str__()) and IsAnySetInSet(filters['season'], show.definingChars.seasonPeriod.__str__()):
             res.add(show)
 
     return res
@@ -118,3 +135,26 @@ def IsAnySetInSet(filter, mainSet):
         if x.__str__() in mainSet:
             return True
     return False
+
+
+def SetToggleCheck(filter, mainSet, inclu):
+    """
+    :param filter: filter lists
+    :param mainSet: set of things to be check against filters
+    :param inclu: bool of whether to act as inclusive or excusive selection
+    """
+    if inclu:
+        return IsAnySetInSet(filter, mainSet)
+    return IsSetInSet(filter, mainSet)
+
+
+def GenreAndTagToggle(show, filters, toggles):
+    """
+    :param show: show to test
+    :param filters: dict of filter lists
+    :param toggles: dict of iclusivity
+    """
+    isInclusive = toggles['dual']
+    if isInclusive and not (len(filters['tags']) < 1 or len(filters['genres']) < 1):
+        return SetToggleCheck(filters['tags'], show.GetTags(), toggles['tags']) or SetToggleCheck(filters['genres'], show.genres, toggles['genres'])
+    return SetToggleCheck(filters['tags'], show.GetTags(), toggles['tags']) and SetToggleCheck(filters['genres'], show.genres, toggles['genres'])

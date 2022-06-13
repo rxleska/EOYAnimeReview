@@ -1,5 +1,3 @@
-from re import X
-
 
 def Arr2Str(a):
     x = ""
