@@ -1,5 +1,7 @@
+from Anime import Anime
 import ResponseManuver as rm
 import json
+from typing import List
 
 
 def GenerateAnimeFromJson():
@@ -19,6 +21,7 @@ def GenerateAnimeFromJson():
         'CURRENT': []
     }
 
+    lists: dict[str, List[Anime]]
     lists = {
         'COMPLETED': [],
         'DROPPED': [],

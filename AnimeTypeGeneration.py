@@ -1,3 +1,4 @@
+from typing import Dict
 from Anime import AdvancedScores, MediaIds, Rating, AniName, Anime, Progression, Rankings, ADate, AniImages, Recommendations, Character, DefiningCharacteristics, ExternalLink, ExternalMediaSet, MediaStatsDistribution, RelatedShow, Staff, Studio, Tag
 
 
@@ -199,6 +200,7 @@ def GenerateCharacterList(arr):
     try:
         for i in arr:
             img = Imgs2Array(GetContentsFromPath('node~image', i))
+            dob = GetContentsFromPath('node~dateOfBirth', i)
             if len(img) > 0:
                 img = img[0]
             else:
@@ -210,7 +212,11 @@ def GenerateCharacterList(arr):
                 GetContentsFromPath('node~name~userPreferred', i),
                 img,
                 GetContentsFromPath('node~description', i),
-                GetContentsFromPath('node~dateOfBirth', i),
+                ADate(
+                    GetContentsFromPath('year', dob),
+                    GetContentsFromPath('month', dob),
+                    GetContentsFromPath('day', dob)
+                ),
                 GetContentsFromPath('node~age', i),
                 GetContentsFromPath('node~bloodType', i),
                 GetContentsFromPath('node~gender', i)
@@ -236,3 +242,25 @@ def GenerateStudioList(arr):
     except:
         return None
     return ret
+
+
+def GenerateMediaStats(ent):
+    """
+    Creates a MediaStatsDistribution object for the show
+    """
+    scores = GetContentsFromPath("scoreDistribution", ent)
+    statuss = GetContentsFromPath("statusDistribution", ent)
+    scoreMap = {}
+    statusMap = {}
+    for score in scores:
+        scoreMap[GetContentsFromPath("score", score)] = GetContentsFromPath(
+            "amount", score)
+    for status in statuss:
+        statusMap[GetContentsFromPath("status", status)] = GetContentsFromPath(
+            "amount", status)
+
+    x = MediaStatsDistribution(
+        scoreMap,
+        statusMap
+    )
+    return x

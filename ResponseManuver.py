@@ -1,5 +1,5 @@
 from Anime import AdvancedScores, MediaIds, Rating, AniName, Anime, Progression, Rankings, ADate, AniImages, Recommendations, Character, DefiningCharacteristics, ExternalLink, ExternalMediaSet, MediaStatsDistribution, RelatedShow, Staff, Studio, Tag
-from AnimeTypeGeneration import GenerateExternalLinks, GenerateRecommendations, GenerateStaffList, GenerateTagsList, Imgs2Array, Imgs2Color, AniImages, GenerateRankings, GetContentsFromPath, GenerateRelatedMedia, GenerateCharacterList, GenerateStudioList
+from AnimeTypeGeneration import GenerateExternalLinks, GenerateRecommendations, GenerateStaffList, GenerateTagsList, Imgs2Array, Imgs2Color, AniImages, GenerateRankings, GetContentsFromPath, GenerateRelatedMedia, GenerateCharacterList, GenerateStudioList, GenerateMediaStats
 
 
 def CreateAnimeFromEntry(ent):
@@ -24,7 +24,8 @@ def CreateAnimeFromEntry(ent):
         GetContentsFromPath('media~popularity', ent),
         GetContentsFromPath('media~favourites', ent),
         GetContentsFromPath('media~isFavorite', ent),
-        GenerateRankings(GetContentsFromPath('media~rankings', ent))
+        GenerateRankings(GetContentsFromPath('media~rankings', ent)),
+        GenerateMediaStats(GetContentsFromPath('media~stats', ent))
     )
     progression = Progression(
         ADate(

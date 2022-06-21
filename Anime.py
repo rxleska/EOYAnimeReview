@@ -1,3 +1,7 @@
+from tokenize import String
+from typing import List, Dict
+from multiprocessing.dummy import Array
+
 
 def Arr2Str(a):
     x = ""
@@ -27,8 +31,25 @@ class Anime:
         :param chars: Characters: TYPE Array of TYPE Character
         :param sdos: Studios: TYPE Array of TYPE Studio
         :param surl: Site Url of Anime Entry (media siteUrl)
-        :param defc: Defining Characteristics
+        :param defc: Defining Characteristics : Type DefiningCharacteristics 
         """
+        self.ids: MediaIds
+        self.rating: Rating
+        self.progression: Progression
+        self.img: AniImages
+        self.name: AniName
+        self.recommendations: List[Recommendations]
+        self.staff: List[Staff]
+        self.tags: List[Tag]
+        self.description: str
+        self.externalMedia: ExternalMediaSet
+        self.genres: List[RelatedShow]
+        self.relatedMedia: List[RelatedShow]
+        self.characters: List[Character]
+        self.studios: List[Studio]
+        self.siteUrl: str
+        self.definingChars: DefiningCharacteristics
+
         self.ids = i
         self.rating = r
         self.progression = p
@@ -71,6 +92,12 @@ class MediaIds:
         :param eu: entry UserId (Entry userId)
         :param em: entry MediaId (Entry mediaId)
         """
+        self.anilist: str
+        self.MAL: str
+        self.entryId: str
+        self.entryUserId: str
+        self.entryMediaId: str
+
         self.anilist = a
         self.MAL = m
         self.entryId = ei
@@ -84,7 +111,7 @@ class MediaIds:
 class Rating:
     """Contains the Different Scores and Ratings"""
 
-    def __init__(self, s, advs, avs, ms, p, f, isf, rks):
+    def __init__(self, s, advs, avs, ms, p, f, isf, rks, medStat):
         """
         Contains the Different Scores and Ratings\n
         :param s: Score (Entry score)
@@ -95,7 +122,18 @@ class Rating:
         :param f: Number Of Favorites (Media favourites)
         :param isf: isFavorite (media isFavorite)
         :param rks: Rankings its in (media rankings): TYPE Array of TYPE Ranking : 
+        :param medStat: Media Stats : Type MediaStatsDistribution
         """
+        self.score: float
+        self.advancedScore: AdvancedScores
+        self.averageScore: float
+        self.meanScore: float
+        self.popularity: int
+        self.favorites: int
+        self.isFavorite: bool
+        self.rankings: List[Rankings]
+        self.mediaStats: MediaStatsDistribution
+
         self.score = s
         self.advancedScore = advs
         self.averageScore = avs
@@ -104,6 +142,7 @@ class Rating:
         self.favorites = f
         self.isFavorite = isf
         self.rankings = rks
+        self.mediaStats = medStat
 
     def __str__(self):
         return "score:" + self.score.__str__() + " AdvScore:" + self.advancedScore.__str__() + " aveScore:" + self.averageScore.__str__() + " meanScore:" + self.meanScore.__str__() + " pop:" + self.popularity.__str__() + " favorites:" + self.favorites.__str__() + " Rankings:" + Arr2Str(self.rankings)
@@ -121,6 +160,12 @@ class AdvancedScores:
         :param a: Audio Score (Entry advancedScores Audio)
         :param e: Enjoyment Score (Entry advancedScores Enjoyment)
         """
+        self.story: float
+        self.character: float
+        self.visuals: float
+        self.audio: float
+        self.enjoyment: float
+
         self.story = s
         self.character = c
         self.visuals = v
@@ -134,21 +179,20 @@ class AdvancedScores:
 class MediaStatsDistribution:
     """Media Statistics on distibution of scores"""
 
-    def __init__(self, ss, sa, sts, sta):
+    def __init__(self, scr, stus):
         """
         Media Statistics on distibution of scores\n
-        :param ss: ScoreDistribution Score (Entry Stats scoreDistribution score)
-        :param sa: ScoreDistrbution Amount (Entry Stats scoreDistribution amount)
-        :param sts: statusDistribution status (Entry Stats statusDistribution status)
-        :param sta: statusDistrbution Amount (Entry Stats statusDistribution amount)
+        :param scr: Score Distribution map, {score, amount}
+        :param stus: Status Distribution map, {status, amount}
         """
-        self.scoreDistribution = ss
-        self.statusDistribution = sts
-        self.scoreDistributionAmount = sa
-        self.statusDistributionAmount = sta
+        self.scoreDistribution: dict
+        self.statusDistribution: dict
+
+        self.scoreDistribution = scr
+        self.statusDistribution = stus
 
     def __str__(self):
-        return "ScoreDist:" + self.scoreDistribution.__str__() + " ScoreDistAmt" + self.scoreDistributionAmount.__str__() + " StatusDist" + self.statusDistribution.__str__() + " StatusDistAmt" + self.statusDistributionAmount.__str__()
+        return "Scores:" + self.statusDistribution.__str__() + "\n" + "Statuss:" + self.statusDistribution.__str__()
 
 
 class Progression:
@@ -162,6 +206,11 @@ class Progression:
         :param r: Times Repeated (Entry repeat)
         :param s: Status (Entry status)
         """
+        self.finished: ADate
+        self.progress: str
+        self.timesRepeated: int
+        self.status: str
+
         self.finished = f
         self.progress = p
         self.timesRepeated = r
@@ -181,6 +230,10 @@ class ADate:
         :param m: month (completedAt month)
         :param d: day (completedAt day)
         """
+        self.year: int
+        self.month: int
+        self.day: int
+
         self.year = y
         self.month = m
         self.day = d
@@ -199,6 +252,10 @@ class AniImages:
         :param cic: coverImageColor: Hex of average color in cover (media coverImage)
         :param b: Banner Image (media bannerImage)
         """
+        self.coverImage: List[str]
+        self.coverImageColor: str
+        self.banner: str
+
         self.coverImage = ci
         self.coverImageColor = cic
         self.banner = b
@@ -219,6 +276,12 @@ class AniName:
         :param s: Synonyms for the shows Name (media synonyms): TYPE Array:
         :param ht: hashtag (media hashtag)
         """
+        self.native: str
+        self.romaji: str
+        self.english: str
+        self.synonyms: List[str]
+        self.hashtag: str
+
         self.native = tn
         self.romaji = tr
         self.english = te
@@ -249,6 +312,20 @@ class DefiningCharacteristics:
         :param ia: isAdult (media isAdult) 
         :param il: isLicensed (media isLicensed)
         """
+        self.seasonYear: int
+        self.seasonPeriod: str
+        self.seasonNumber: str
+        self.type: str
+        self.format: str
+        self.airingStatus: str
+        self.finishedAiringAt: ADate
+        self.countryOfOrigin: str
+        self.numberOfEpisodes: int
+        self.duration: int
+        self.source: str
+        self.isAdult: bool
+        self.isLicensed: bool
+
         self.seasonYear = sy
         self.seasonPeriod = s
         self.seasonNumber = sn
@@ -282,12 +359,21 @@ class Rankings:
         :param a: is Rankings on the bases of rank of all time (media rankings allTime)
         :param c: context of the basis of the rankings (media rankings context)
         """
+        self.id: int
+        self.rank: str
+        self.type: str
+        self.format: str
+        self.year: str
+        self.season: str
+        self.isOfAllTime: bool
+        self.context: str
+
         self.id = i
         self.rank = r
         self.type = t  # null means rating is not by type
         self.format = f  # null means rating is not by format
         self.year = y  # null means rating is not by year
-        self.season = s  # null means rating is not by year
+        self.season = s  # null means rating is not by season
         self.isOfAllTime = a  # defines if rating is in place of all time
         self.context = c  # defines context
 
@@ -305,6 +391,10 @@ class Recommendations:
         :param i: id of media (media recommendations edges node mediaRecommendation id)
         :param n: Title of recommended Media: TYPE AniName :(media recommendations edges node mediaRecommendation)
         """
+        self.rank: int
+        self.id: int
+        self.name: AniName
+
         self.rank = r
         self.id = i
         self.name = n
@@ -328,6 +418,15 @@ class Staff:
         :param dob: Date of Birth of Staff Member: TYPE ADate (staff edges node dateOfBirth)
         :param a: Age of Staff Member (staff edges node age)
         """
+        self.role: str
+        self.id: int
+        self.nameNative: str
+        self.namePrefered: str
+        self.image: str
+        self.description: str
+        self.dateOfBirth: ADate
+        self.age: int
+
         self.role = r
         self.id = i
         self.nameNative = nn
@@ -356,6 +455,15 @@ class Tag:
         :param iMS: is the Tag a Spoiler of the Media (media tags isMediaSpoiler)
         :param iA: is the Tag recognised as Adult (media tags isAdult)
         """
+        self.id: int
+        self.name: str
+        self.description: str
+        self.category: str
+        self.ranking: int
+        self.isGeneralSpoiler: bool
+        self.isMediaSpoiler: bool
+        self.isAdult: bool
+
         self.id = i
         self.name = n
         self.description = des
@@ -379,6 +487,10 @@ class ExternalMediaSet:
         :param tt: Trailer Thumbnail (media trailer thumbnail)
         :param els: Array of external links: TYPE Array of TYPE ExternalLink
         """
+        self.trailer: str
+        self.trailerThumbnail: str
+        self.externalLinks: List[ExternalLink]
+
         self.trailer = tu
         self.trailerThumbnail = tt
         self.externalLinks = els
@@ -399,6 +511,11 @@ class ExternalLink:
         :param t: Type of  Link (type)
         "param i: Icon of site (icon)
         """
+        self.url: str
+        self.site: str
+        self.type: str
+        self.icon: str
+
         self.url = u
         self.site = s
         self.type = t
@@ -418,6 +535,10 @@ class RelatedShow:
         :param t: Title of the content (media relations edges node title userPreferred)
         :param r: Relation Type (media relations edges relationType)
         """
+        self.id: int
+        self.title: str
+        self.relationship: str
+
         self.id = i
         self.title = t
         self.relationship = r
@@ -438,11 +559,22 @@ class Character:
         :param upn: User Prefered Name (media characters edges node name userPreferred)
         :param img: Largest Image of Character (media characters edges node image large/medium)
         :param des: Description (media characters edges node description)
-        :param dob: Date of Birth (media characters edges node dateOfBirth)
+        :param dob: Date of Birth (media characters edges node dateOfBirth) : Type ADate
         :param a: Age (media characters edges node age)
         :param bt: Blood Type if Available (media characters edges node bloodType)
         :param g: Gender (media characters edges node gender)
         """
+        self.role: str
+        self.fullName: str
+        self.nativeName: str
+        self.userPreferedName: str
+        self.image: str
+        self.description: str
+        self.birthday: ADate
+        self.age: int
+        self.bloodType: str
+        self.gender: str
+
         self.role = r
         self.fullName = fn
         self.nativeName = nn
@@ -469,6 +601,11 @@ class Studio:
         :param iAS: isAnimationStudio (media studios edges node isAnimationStudio)
         :param sU: site URL (media studios edges node siteUrl)
         """
+        self.isMain: bool
+        self.name: str
+        self.isAnimationStudio: bool
+        self.url: str
+
         self.isMain = im
         self.name = n
         self.isAnimationStudio = iAS
