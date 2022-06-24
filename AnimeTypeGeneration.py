@@ -219,7 +219,10 @@ def GenerateCharacterList(arr):
                 ),
                 GetContentsFromPath('node~age', i),
                 GetContentsFromPath('node~bloodType', i),
-                GetContentsFromPath('node~gender', i)
+                GetContentsFromPath('node~gender', i),
+                GetContentsFromPath('node~isFavourite', i),
+                GetContentsFromPath('node~favourites', i),
+                GetContentsFromPath('node~isFavouriteBlocked', i)
             ))
     except:
         return None

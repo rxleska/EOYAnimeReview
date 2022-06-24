@@ -109,6 +109,9 @@ query ($name: String) { # Define which variables will be used in the query (id)
                   bloodType
                   gender
                   age
+                  isFavourite
+                  isFavouriteBlocked
+                  favourites
                 }
               }
             }

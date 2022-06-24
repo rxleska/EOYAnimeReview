@@ -1,6 +1,11 @@
+from operator import index
 from tokenize import String
 from typing import List, Dict
 from multiprocessing.dummy import Array
+from enum import Enum
+from winreg import EnumKey, EnumValue
+
+from torch import are_deterministic_algorithms_enabled
 
 
 def Arr2Str(a):
@@ -8,6 +13,26 @@ def Arr2Str(a):
     for i in a:
         x = x + " " + i.__str__()
     return x
+
+
+class AnimeSelection(Enum):
+    """Defines 5 sub lists from anilist as an Enum"""
+    COMPLETED = 'COMPLETED'
+    DROPPED = 'DROPPED'
+    PLANNING = 'PLANNING'
+    PAUSED = 'PAUSED'
+    CURRENT = 'CURRENT'
+
+
+def AnimeSelectionByIndex(index):
+    switch = {
+        1: AnimeSelection.COMPLETED,
+        2: AnimeSelection.DROPPED,
+        3: AnimeSelection.PLANNING,
+        4: AnimeSelection.PAUSED,
+        5: AnimeSelection.CURRENT
+    }
+    return (AnimeSelection.COMPLETED if not index in switch.keys() else switch[index])
 
 
 class Anime:
@@ -550,7 +575,7 @@ class RelatedShow:
 class Character:
     """Defines Character Type used to describe charcters in a show"""
 
-    def __init__(self, r, fn, nn, upn, img, des, dob, a, bt, g):
+    def __init__(self, r, fn, nn, upn, img, des, dob, a, bt, g, iF, nF, iFb):
         """
         Defines Character Type used to describe charcters in a show\n
         :param r: Role of Character (media characters edges role)
@@ -563,6 +588,9 @@ class Character:
         :param a: Age (media characters edges node age)
         :param bt: Blood Type if Available (media characters edges node bloodType)
         :param g: Gender (media characters edges node gender)
+        :param iF: is Character favorited by user (media characters edges node isFavorite)
+        :param nF: Number of users whom have favorited (media characters edges node favorites) 
+        :param iFb: is Character blocked from being favorited? (media characters edges node isFavoriteBlocked)
         """
         self.role: str
         self.fullName: str
@@ -574,6 +602,9 @@ class Character:
         self.age: int
         self.bloodType: str
         self.gender: str
+        self.isFavorite: bool
+        self.numFavorite: int
+        self.isFavoriteBlocked: bool
 
         self.role = r
         self.fullName = fn
@@ -585,6 +616,9 @@ class Character:
         self.age = a
         self.bloodType = bt
         self.gender = g
+        self.isFavorite = iF
+        self.numFavorite = nF
+        self.isFavoriteBlocked = iFb
 
     def __str__(self):
         return "\n" + self.fullName.__str__() + " aka " + self.nativeName.__str__() + " is a " + self.role.__str__() + " that is " + self.age.__str__() + " and type " + self.bloodType.__str__() + "blood type.\n" + "Des:" + self.description.__str__() + "dob:" + self.birthday.__str__() + "gender:" + self.gender.__str__() + "imgurl:" + self.image.__str__()
