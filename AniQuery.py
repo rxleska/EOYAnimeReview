@@ -184,6 +184,10 @@ query ($name: String) { # Define which variables will be used in the query (id)
                           	id
                           	idMal
                           	type
+                            episodes
+                          	isAdult
+                          	genres
+                          	status
                             title{
                                 english
                                 native

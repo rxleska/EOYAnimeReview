@@ -4,6 +4,7 @@ from typing import List, Dict
 from multiprocessing.dummy import Array
 from enum import Enum
 from winreg import EnumKey, EnumValue
+from xmlrpc.client import boolean
 
 from torch import are_deterministic_algorithms_enabled
 
@@ -68,7 +69,7 @@ class Anime:
         self.tags: List[Tag]
         self.description: str
         self.externalMedia: ExternalMediaSet
-        self.genres: List[RelatedShow]
+        self.genres: List[str]
         self.relatedMedia: List[RelatedShow]
         self.characters: List[Character]
         self.studios: List[Studio]
@@ -409,20 +410,32 @@ class Rankings:
 class Recommendations:
     """Recommendation Show and Rating"""
 
-    def __init__(self, r, i, n):
+    def __init__(self, r, i, n, s, ne, iA, g):
         """
         Recommendation Show and Rating\n
         :param r: Rating of how many people recommended the show (media recommendations edges node rating)
         :param i: id of media (media recommendations edges node mediaRecommendation id)
         :param n: Title of recommended Media: TYPE AniName :(media recommendations edges node mediaRecommendation)
+        :param s: Status of User for the show (media recommendations edges node mediaRecommendation status)
+        :param ne: Number of Episodes in the show (media recommendations edges node mediaRecommendation episodes)
+        :param iA: is show Adult (media recommendations edges node mediaRecommendation isAdult)
+        :param g: Genres List (media recommendations edges node mediaRecommendation genres)
         """
         self.rank: int
         self.id: int
         self.name: AniName
+        self.status: str
+        self.numberOfEpisodes: int
+        self.isAdult: bool
+        self.genres: List[str]
 
         self.rank = r
         self.id = i
         self.name = n
+        self.status = s
+        self.numberOfEpisodes = ne
+        self.isAdult = iA
+        self.genres = g
 
     def __str__(self):
         return "rnk:" + self.rank.__str__() + " id:" + self.id.__str__() + " name:" + self.name.__str__()

@@ -81,26 +81,30 @@ def GenerateRecommendations(arr):
     Creates an Array of type Recommendations\n
     """
     ret = []
-    try:
-        for rec in arr:
-            ret.append(Recommendations(
-                GetContentsFromPath('node~rating', rec),
-                GetContentsFromPath('node~mediaRecommendation~id', rec),
-                AniName(
-                    GetContentsFromPath(
-                        'node~mediaRecommendation~title~native', rec),
-                    GetContentsFromPath(
-                        'node~mediaRecommendation~title~romaji', rec),
-                    GetContentsFromPath(
-                        'node~mediaRecommendation~title~english', rec),
-                    GetContentsFromPath(
-                        'node~mediaRecommendation~synonyms', rec),
-                    GetContentsFromPath(
-                        'node~mediaRecommendation~hashtag', rec),
-                )
-            ))
-    except:
-        return None
+    # try:
+    for rec in arr:
+        ret.append(Recommendations(
+            GetContentsFromPath('node~rating', rec),
+            GetContentsFromPath('node~mediaRecommendation~id', rec),
+            AniName(
+                GetContentsFromPath(
+                    'node~mediaRecommendation~title~native', rec),
+                GetContentsFromPath(
+                    'node~mediaRecommendation~title~romaji', rec),
+                GetContentsFromPath(
+                    'node~mediaRecommendation~title~english', rec),
+                GetContentsFromPath(
+                    'node~mediaRecommendation~synonyms', rec),
+                GetContentsFromPath(
+                    'node~mediaRecommendation~hashtag', rec),
+            ),
+            GetContentsFromPath('node~mediaRecommendation~status', rec),
+            GetContentsFromPath('node~mediaRecommendation~episodes', rec),
+            GetContentsFromPath('node~mediaRecommendation~isAdult', rec),
+            GetContentsFromPath('node~mediaRecommendation~genres', rec)
+        ))
+    # except:
+    #     pass
     return ret
 
 
