@@ -11,9 +11,11 @@ from GetAnimeFromJson import GenerateAnimeFromJson as GetAnime
 ############################ Settings ##############################
 ####################################################################
 
-midScore = 6  # lowest score before acting as negative recommendations
+midScore = 7  # lowest score before acting as negative recommendations
 isRelative = True  # round ratings to a max of 10 in a show
-
+squareMultiples = True  # sqares multiplier for more weighted ratings
+includeLargeShows = False  # includes shows over 26 episodes
+includePausedAndDropped = False  # include shows that user has paused and or dropped
 #####################################################################
 ########################### The Code ################################
 #####################################################################
@@ -52,24 +54,33 @@ recoms = {}
 idtoNameMap = {}
 idLst = []
 
+if not includePausedAndDropped:
+    for show in ani['DROPPED']:
+        idLst.append(show.ids.anilist)
+    for show in ani['PAUSED']:
+        idLst.append(show.ids.anilist)
+
 # Generates recommendation maps and id list
 for show in ani['COMPLETED']:
     idLst.append(show.ids.anilist)
     srate = show.rating.score
     multiplier = srate-midScore
+    if squareMultiples:
+        multiplier = multiplier * multiplier
     devisor = 1
     if isRelative:
         devisor = GetAdjustedRecommendationsLevel(show.recommendations)/10
     for recommendation in show.recommendations:
-        id = recommendation.id
-        idtoNameMap[id] = recommendation.name
-        if id not in recoms.keys():
-            recoms[id] = int(math.floor(
-                (recommendation.rank*multiplier)/devisor))
-        else:
-            x = recoms[id]
-            recoms[id] = int(
-                x + math.floor((recommendation.rank*multiplier)/devisor))
+        if recommendation.numberOfEpisodes is None or includeLargeShows or recommendation.numberOfEpisodes < 26:
+            id = recommendation.id
+            idtoNameMap[id] = recommendation.name
+            if id not in recoms.keys():
+                recoms[id] = int(math.floor(
+                    (recommendation.rank*multiplier)/devisor))
+            else:
+                x = recoms[id]
+                recoms[id] = int(
+                    x + math.floor((recommendation.rank*multiplier)/devisor))
 
 # sorts recommendations
 recoms = sorted(recoms.items(), key=lambda x: x[1])
