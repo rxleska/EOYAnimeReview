@@ -98,7 +98,6 @@ def GenerateRecommendations(arr):
                 GetContentsFromPath(
                     'node~mediaRecommendation~hashtag', rec),
             ),
-            GetContentsFromPath('node~mediaRecommendation~status', rec),
             GetContentsFromPath('node~mediaRecommendation~episodes', rec),
             GetContentsFromPath('node~mediaRecommendation~isAdult', rec),
             GetContentsFromPath('node~mediaRecommendation~genres', rec)

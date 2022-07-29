@@ -410,13 +410,12 @@ class Rankings:
 class Recommendations:
     """Recommendation Show and Rating"""
 
-    def __init__(self, r, i, n, s, ne, iA, g):
+    def __init__(self, r, i, n, ne, iA, g):
         """
         Recommendation Show and Rating\n
         :param r: Rating of how many people recommended the show (media recommendations edges node rating)
         :param i: id of media (media recommendations edges node mediaRecommendation id)
         :param n: Title of recommended Media: TYPE AniName :(media recommendations edges node mediaRecommendation)
-        :param s: Status of User for the show (media recommendations edges node mediaRecommendation status)
         :param ne: Number of Episodes in the show (media recommendations edges node mediaRecommendation episodes)
         :param iA: is show Adult (media recommendations edges node mediaRecommendation isAdult)
         :param g: Genres List (media recommendations edges node mediaRecommendation genres)
@@ -432,7 +431,6 @@ class Recommendations:
         self.rank = r
         self.id = i
         self.name = n
-        self.status = s
         self.numberOfEpisodes = ne
         self.isAdult = iA
         self.genres = g
