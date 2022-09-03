@@ -3,3 +3,6 @@ __pycache__
 *.txt
 out
 test.py
+ReRater.py
+Ratings
+design1.ui

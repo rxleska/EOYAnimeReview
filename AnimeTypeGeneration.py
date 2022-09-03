@@ -97,6 +97,8 @@ def GenerateRecommendations(arr):
                     'node~mediaRecommendation~synonyms', rec),
                 GetContentsFromPath(
                     'node~mediaRecommendation~hashtag', rec),
+                GetContentsFromPath(
+                    'node~mediaRecommendation~title~userPreferred', rec),
             ),
             GetContentsFromPath('node~mediaRecommendation~episodes', rec),
             GetContentsFromPath('node~mediaRecommendation~isAdult', rec),

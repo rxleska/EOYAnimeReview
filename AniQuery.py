@@ -31,6 +31,7 @@ query ($name: String) { # Define which variables will be used in the query (id)
           	idMal
             title{
               	native
+                userPreferred
                 romaji
                 english
             }
@@ -187,7 +188,6 @@ query ($name: String) { # Define which variables will be used in the query (id)
                             episodes
                           	isAdult
                           	genres
-                          	status
                             title{
                                 english
                                 native

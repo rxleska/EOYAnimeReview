@@ -1,12 +1,11 @@
 from operator import index
 from tokenize import String
+from turtle import up
 from typing import List, Dict
 from multiprocessing.dummy import Array
 from enum import Enum
 from winreg import EnumKey, EnumValue
 from xmlrpc.client import boolean
-
-from torch import are_deterministic_algorithms_enabled
 
 
 def Arr2Str(a):
@@ -293,7 +292,7 @@ class AniImages:
 class AniName:
     """Collect of all defining Titles and Names"""
 
-    def __init__(self, tn, tr, te, s, ht):
+    def __init__(self, tn, tr, te, s, ht, up):
         """
         Collect of all defining Titles and Names\n
         :param tn: Title Native (media title native)
@@ -301,21 +300,24 @@ class AniName:
         :param te: Title English (media title english)
         :param s: Synonyms for the shows Name (media synonyms): TYPE Array:
         :param ht: hashtag (media hashtag)
+        :param up: User Preferred Name
         """
         self.native: str
         self.romaji: str
         self.english: str
         self.synonyms: List[str]
         self.hashtag: str
+        self.userPreferred: str
 
         self.native = tn
         self.romaji = tr
         self.english = te
         self.synonyms = s
         self.hashtag = ht
+        self.userPreferred = up
 
     def __str__(self):
-        return "NameNative:" + self.native.__str__() + " NameRomaji:" + self.romaji.__str__() + " NameEng:" + self.english.__str__() + " Synonyms:" + self.synonyms.__str__() + " hashtag:" + self.hashtag.__str__()
+        return "NameNative:" + self.native.__str__() + " NameRomaji:" + self.romaji.__str__() + " NameEng:" + self.english.__str__() + " Synonyms:" + self.synonyms.__str__() + " hashtag:" + self.hashtag.__str__() + " userPreferred:" + self.userPreferred
 
 
 class DefiningCharacteristics:

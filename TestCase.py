@@ -1,5 +1,6 @@
 import math
 import random
+from Anime import Anime
 import ResponseManuver as rm
 import json
 
@@ -35,12 +36,12 @@ for x in data['data']['MediaListCollection']['lists']:
 for list in listsJS.keys():
     for show in listsJS[list]:
         lists[list].append(rm.CreateAnimeFromEntry(show))
-
+randomShowFromCompleted: Anime
 randomShowFromCompleted = (lists['COMPLETED'][random.randint(0,
                                                              len(lists['COMPLETED'])-1)])
 
 
-print(randomShowFromCompleted.name.english)
+print(randomShowFromCompleted.name.userPreferred)
 print(randomShowFromCompleted.definingChars.seasonYear)
 print(randomShowFromCompleted.definingChars.seasonPeriod)
 print(randomShowFromCompleted.tags[0].name)

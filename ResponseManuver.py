@@ -47,7 +47,8 @@ def CreateAnimeFromEntry(ent):
         GetContentsFromPath('media~title~romaji', ent),
         GetContentsFromPath('media~title~english', ent),
         GetContentsFromPath('media~synonyms', ent),
-        GetContentsFromPath('media~hashtag', ent)
+        GetContentsFromPath('media~hashtag', ent),
+        GetContentsFromPath('media~title~userPreferred', ent)
     )
     recommendations = GenerateRecommendations(
         GetContentsFromPath('media~recommendations~edges', ent))

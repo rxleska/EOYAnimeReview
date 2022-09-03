@@ -11,7 +11,7 @@ from GetAnimeFromJson import GenerateAnimeFromJson as GetAnime
 ############################ Settings ##############################
 ####################################################################
 
-midScore = 7  # lowest score before acting as negative recommendations
+midScore = 6.7  # lowest score before acting as negative recommendations
 isRelative = True  # round ratings to a max of 10 in a show
 squareMultiples = True  # sqares multiplier for more weighted ratings
 includeLargeShows = False  # includes shows over 26 episodes
@@ -65,11 +65,14 @@ for show in ani['COMPLETED']:
     idLst.append(show.ids.anilist)
     srate = show.rating.score
     multiplier = srate-midScore
+
     if squareMultiples:
-        multiplier = multiplier * multiplier
+        multiplier = multiplier * abs(multiplier)
     devisor = 1
+
     if isRelative:
         devisor = GetAdjustedRecommendationsLevel(show.recommendations)/10
+
     for recommendation in show.recommendations:
         if recommendation.numberOfEpisodes is None or includeLargeShows or recommendation.numberOfEpisodes < 26:
             id = recommendation.id
