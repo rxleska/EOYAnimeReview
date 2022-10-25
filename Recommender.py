@@ -11,11 +11,12 @@ from GetAnimeFromJson import GenerateAnimeFromJson as GetAnime
 ############################ Settings ##############################
 ####################################################################
 
-midScore = 7  # lowest score before acting as negative recommendations
+midScore = 5  # lowest score before acting as negative recommendations
 isRelative = True  # round ratings to a max of 10 in a show
-squareMultiples = True  # sqares multiplier for more weighted ratings
-includeLargeShows = False  # includes shows over 26 episodes
+squareMultiples = False  # sqares multiplier for more weighted ratings
+includeLargeShows = True  # includes shows over 26 episodes
 includePausedAndDropped = False  # include shows that user has paused and or dropped
+
 #####################################################################
 ########################### The Code ################################
 #####################################################################
@@ -43,7 +44,7 @@ def GetAdjustedRecommendationsLevel(recs: List[Recommendations]):
     for rec in recs:
         if rec.rank > highest:
             highest = rec.rank
-    return highest
+    return highest if highest != 0 else 1
 
 
 # Anime Data
@@ -52,35 +53,44 @@ ani = GetAnime()
 # Maps and list
 recoms = {}
 idtoNameMap = {}
+showList = ani['COMPLETED'] if not includePausedAndDropped else [].append(ani['COMPLETED'], ani['DROPPED'], ani['PAUSED']) # includes dropped and paused list
 idLst = []
 
-if not includePausedAndDropped:
-    for show in ani['DROPPED']:
-        idLst.append(show.ids.anilist)
-    for show in ani['PAUSED']:
-        idLst.append(show.ids.anilist)
+# if not includePausedAndDropped:
+#     for show in ani['DROPPED']:
+#         idLst.append(show.ids.anilist)
+#     for show in ani['PAUSED']:
+#         idLst.append(show.ids.anilist)
 
 # Generates recommendation maps and id list
-for show in ani['COMPLETED']:
+for show in showList:
     idLst.append(show.ids.anilist)
+    
+    # Creates Multiplier from parent show score compared to desired midpoint
     srate = show.rating.score
     multiplier = srate-midScore
     if squareMultiples:
         multiplier = multiplier * multiplier
-    devisor = 1
+    
+    # Create Divisor
+    divisor = 1
     if isRelative:
-        devisor = GetAdjustedRecommendationsLevel(show.recommendations)/10
+        divisor = GetAdjustedRecommendationsLevel(show.recommendations)/10
+    
+    # Creates Map of Ids to Names and Ids to Recommendation value
     for recommendation in show.recommendations:
-        if recommendation.numberOfEpisodes is None or includeLargeShows or recommendation.numberOfEpisodes < 26:
+        if recommendation.numberOfEpisodes is not None and (True if not includeLargeShows else recommendation.numberOfEpisodes < 26):
             id = recommendation.id
-            idtoNameMap[id] = recommendation.name
+            idtoNameMap[id] = recommendation.name # Id to Name map
+            
+            #Ids to Recom Value
             if id not in recoms.keys():
                 recoms[id] = int(math.floor(
-                    (recommendation.rank*multiplier)/devisor))
+                    (recommendation.rank*multiplier)/divisor))
             else:
                 x = recoms[id]
                 recoms[id] = int(
-                    x + math.floor((recommendation.rank*multiplier)/devisor))
+                    x + math.floor((recommendation.rank*multiplier)/divisor))
 
 # sorts recommendations
 recoms = sorted(recoms.items(), key=lambda x: x[1])
@@ -98,7 +108,7 @@ for recommendationID in sortRecom.keys():
 
 print(recomsWName)
 
-# Prints Response to file
+# Writes Response to file
 out = ""
 for item in recomsWName.items():
     out = out + item[0].__str__() + ":" + item[1].__str__() + "\n"
