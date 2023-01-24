@@ -11,10 +11,10 @@ from GetAnimeFromJson import GenerateAnimeFromJson as GetAnime
 ############################ Settings ##############################
 ####################################################################
 
-midScore = 6.7  # lowest score before acting as negative recommendations
-isRelative = True  # round ratings to a max of 10 in a show
-squareMultiples = True  # sqares multiplier for more weighted ratings
-includeLargeShows = False  # includes shows over 26 episodes
+midScore = 6  # lowest score before acting as negative recommendations
+isRelative = False  # round ratings to a max of 10 in a show
+squareMultiples = False  # sqares multiplier for more weighted ratings
+includeLargeShows = True  # includes shows over 26 episodes
 includePausedAndDropped = False  # include shows that user has paused and or dropped
 #####################################################################
 ########################### The Code ################################
