@@ -22,12 +22,12 @@ def GetBestName(name: AniName):
     return n.__str__()
 
 
-def GetReconValue(i):
+def GetReconValue(i, j):
     if i < 1:
-        return -1
+        return -1 * j
     else:
         # returns the number of digits in the number squared
-        return math.floor(math.log10(i)) ** 3
+        return math.floor(math.log10(i)) ** 3 * j
 
 
 # Anime Data
@@ -49,10 +49,12 @@ for show in showList:
 
             # Ids to Recom Value
             if id not in recoms.keys():
-                recoms[id] = GetReconValue(recommendation.rank)
+                recoms[id] = GetReconValue(
+                    recommendation.rank, show.rating.score)
             else:
                 x = recoms[id]
-                recoms[id] = x + GetReconValue(recommendation.rank)
+                recoms[id] = x + \
+                    GetReconValue(recommendation.rank, show.rating.score)
 
 
 # sorts recommendations
@@ -74,7 +76,7 @@ print(recomsWName)
 # Writes Response to file
 out = ""
 for item in recomsWName.items():
-    out = out + item[0].__str__() + ":" + item[1].__str__() + "\n"
+    out = out + item[0].__str__() + ":" + math.floor(item[1]).__str__() + "\n"
 
 with open('out.txt', 'w', encoding='utf-8') as file:
     file.write(out)
